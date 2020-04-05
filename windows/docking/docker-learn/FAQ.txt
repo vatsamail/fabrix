@@ -4,6 +4,13 @@ Frequently Asked Questions
 Q: I can't use the nano editor on Windows
 A: You'll need to install another plaintext editor, such as Vim, which is available at http://www.vim.org/download.php#pc.
 
+###########################
+# installation on windows
+###########################
+1. Install chocolatey
+2. in admin power shell>choco install docker-desktop --pre
+
+
 ###################################
 # frequent commands
 ###################################
@@ -25,7 +32,7 @@ docker commit f6b68415ac9f
 # save it to new image. Returns new image
 
 docker tag dd090e705d858e70c0772986b21a9f3803f0bc69980ad1bea6abb303dbce4b88 mybuntu
-# now the commited image is tagged to a logical name
+# now the committed image is tagged to a logical name
 
 docker commit myubuntu anotherubuntu
 # is commit and tag together
@@ -120,7 +127,79 @@ bash>ping cat # works
 bash>ping tiger # works
 bash>ping dog # doesn't work
 
+# docker images is very space efficient
+docker commit exciting_ritchie  fulltag.com:8080/myorg/ubuntu:14
+
+# about volumes (shared folders b/w contains or/and host). Not part of images
+
+#persistant b/w host and container
+docker run -ti -v \path\docker-learn\shared_folder:/shared_name ubuntu bash
+
+# ephemeral between containers
+# cmd1
+docker run -ti -v /shared-volume ubuntu bash
+bash>echo "some data to share with another container" > /shared-volume/shared_data_file.txt
+
+# cmd2
+docker run -ti --volumes-from zealous_shirley ubuntu bash
+bash>ls shared_volume/
+# we see the shared_data_file.txt
+bash?echo `uname -a` > shared-volume/from_another_container.txt
+# now the folder remains even if we exit cmd1 container!
+# if we n ow exit even cmd 2, the shared_volume/ is gone!!
+
+
+# docker registry
+### we can keep image registry within companies also use it globally
+docker search ubuntu
+# same search can be done on hub.docker.com
+
+docker login
+# give username and password
+docker pull bash
+docker tag bash vatsamail/bash-test:1.0
+docker push vatsamail/bash-test:1.0
+docker search bash-test
+
+
+# Tip: docker expose?
+docker run -i --expose=22 expert_vatsa bash
+
+# Tip: port exposer
+docker run -p 8080:80
 
 
 
-##### docker contraints with mem, ram, exectime etc.
+################# dockerfile
+docker build -t <tag> <location to the dockerfile>
+# it is line by line
+# each step is cached (if nothing changed it will "skip")
+# they are NOT shell scripts
+# each line is a own docker run
+
+>docker build -t hello .
+# Refer Dockerfile
+
+
+
+########## docker syntax
+FROM java:8
+MAINTAINER First LastName <email@email.com>
+RUN <commands and parameters>
+ADD run.sh /run.sh
+ADD project.tare.gz /install/
+ADD https://google.com/someinga.jpeg /project/
+ENV DB_HOST=db.prod
+ENV DB_PORT-1234
+ENTRYPOINT ls
+# specifies that this is the starting point to run
+CMD <who command executes>
+EXPOSE 8080
+# match port to the container
+VOLUME ["" ""] or VOLUME [""]
+WORKDIR <sets the directory for the reminder of the docker directory>
+WORKDIR /install/
+USER vatsamail
+# Reference: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+##### docker constraints with mem, ram, exectime etc.
