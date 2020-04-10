@@ -1,0 +1,40 @@
+### Reference: https://hyperledger-fabric.readthedocs.io/en/release-2.0/test_network.html
+   50  cd fabric-samples/
+   51  docker images
+   84  g bootstap.sh
+   85  bash bootstap.sh
+   86  docker images
+   89  cd test-network/
+   91  ./network.sh down
+   92  ./network.sh up
+   93  docker images
+   94  docker ps -l
+   96  docker ps -a
+   99  docker ps -a --format '{{.Names}} {{.Image}}'
+  120  docker rm  determined_poincare condescending_euclid
+  121  docker ps -a
+  123  da
+  124  ./network.sh createChannel
+  126  ./network.sh createChannel -c c1
+  127  ./network.sh createChannel -c c2
+  130  ./network.sh deployCC
+  131  l ../bin/
+  132  export PATH=${PWD}/../bin:${PWD}:$PATH
+  134  less ../config/orderer.yaml 
+  135  export FABRIC_CFG_PATH=$PWD/../config/
+  136  export CORE_PEER_TLS_ENABLED=true
+  137  export CORE_PEER_LOCALMSPID="Org1MSP"
+  138  export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+  139  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+  140  export CORE_PEER_ADDRESS=localhost:7051
+  141  peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryAllCars"]}'
+  142  peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"changeCarOwner","Args":["CAR9","Dave"]}'
+  143  export CORE_PEER_TLS_ENABLED=true
+  144  export CORE_PEER_LOCALMSPID="Org2MSP"
+  145  export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+  146  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+  147  export CORE_PEER_ADDRESS=localhost:9051
+  150  peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryCar","CAR9"]}'
+  151  ./network.sh down
+157  ./network.sh up -ca
+166  tree organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/
