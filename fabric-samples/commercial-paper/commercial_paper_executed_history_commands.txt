@@ -1,0 +1,7 @@
+  219  ./network-starter.sh -h
+  220  docker ps
+  221  docker ps -a --format '\''{{.Names}} {{.Image}}'\''
+  225  docker network inspect net_test
+  226  cd commercial-paper/organization/magnetocorp
+  228  cd organization/magnetocorp
+  229  ./configuration/cli/monitordocker.sh net_test
